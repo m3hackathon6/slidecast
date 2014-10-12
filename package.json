@@ -2,6 +2,9 @@
   "name": "slidecast",
   "description": "Lets viewers of your slides follow along on their own devices, in sync with your presentation",
   "version": "0.0.0",
+  "engines": {
+    "node": "0.10.x"
+  }
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
