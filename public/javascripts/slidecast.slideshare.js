@@ -5,15 +5,11 @@
   socket.on('ErrorMessage', function(data) { console.log('Error:', data) });
   socket.on('ViewerCountChanged', function(viewerCount) { console.log('Viewer count changed, there are now ' + viewerCount + ' viewers') });
 
-  /*
-   * Note: obviously we wouldn't just let the user write ?presenter=true in the URL.
-   * On server side we would inject some HTML into the presenter's copy of the file,
-   * e.g. <a id="slidecast-data" data-presId="123" data-presenter="true" data-presenterKey="..." />
-   * and the JS would read this and act accordingly.
-   */
+  // The <a> tag that holds all data injected server-side
+  var dataTag = $('#slidecast-data');
 
-  if (window.location.search.indexOf('presenter') > -1) {
-    socket.emit('JoinAsPresenter', { presId: '123', presenterKey: '8760228e-7b6a-49e1-bbce-f6db2b318195' });
+  if (dataTag.data('presenter')) {
+    socket.emit('JoinAsPresenter', { presId: dataTag.data('pres-id'), presenterKey: dataTag.data('presenter-key') });
 
     var notify = function(slideIndex) {
       var data = {
@@ -40,7 +36,7 @@
       }
     }, 100);
   } else {
-    socket.emit('JoinAsViewer', { presId: '123' });
+    socket.emit('JoinAsViewer', { presId: dataTag.data('pres-id') });
     socket.on('ChangeSlide', function(data) {
       var index = data.indexh;
       var force = false;
