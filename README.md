@@ -1,6 +1,6 @@
 # Slidecast
 
-Slidecast is an application that allows you to synchronise a [reveal.js](http://lab.hakim.se/reveal-js/) presentation across multiple devices. 
+Slidecast is an application that allows you to synchronise a [SlideShare](http://slideshare.net/) presentation across multiple devices. 
 
 Viewers can view the presentation on their own devices, and slide transitions are automatically synchronized. When the presenter moves on to the next slide, so will the viewers. 
 
