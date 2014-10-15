@@ -4,6 +4,10 @@ Slidecast is an application that allows you to synchronise a [reveal.js](http://
 
 Viewers can view the presentation on their own devices, and slide transitions are automatically synchronized. When the presenter moves on to the next slide, so will the viewers. 
 
+## Dependencies
+
+Redis
+
 ## Running
 
 1. Install Node.js and npm (Node Package Manager). On OS X:
@@ -17,7 +21,11 @@ Viewers can view the presentation on their own devices, and slide transitions ar
         $ cd slidecast
         $ npm install
 
-4. Start the server:
+4. Start Redis:
+
+        $ redis-server
+
+5. Start the server:
 
         $ npm start
 
