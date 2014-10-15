@@ -13,9 +13,7 @@
 
     var notify = function(slideIndex) {
       var data = {
-        indexh : slideIndex,
-        indexv : 0,
-        indexf : 0
+        slide : slideIndex
       };
 
       console.log('Sending ChangeSlide event', data);
@@ -38,7 +36,7 @@
   } else {
     socket.emit('JoinAsViewer', { presId: dataTag.data('pres-id') });
     socket.on('ChangeSlide', function(data) {
-      var index = data.indexh;
+      var index = data.slide;
       var force = false;
       var source = "";
       $.slideshareEventManager.controller.play(index, force, source);
