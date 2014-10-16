@@ -44,13 +44,23 @@
     }
   });
 
+  function randomColour() {
+    function c() {
+        return Math.floor(Math.random()*256).toString(16)
+      }
+    return "#"+c()+c()+c();
+  }
+
   // Receiving a comment
   socket.on('Comment', function(data) {
     // Display the comment at a random place
     var x = Math.random() * $window.height();
 
+    // Give it a random colour
+    var colour = randomColour();
+
     // Create a DOM element for the comment
-    var $elem = $('<div style="position: absolute; top: ' + x + 'px; font-size: 200%; white-space:nowrap;">' + data + '</div>');
+    var $elem = $('<div style="position: absolute; top: ' + x + 'px; font-size: 300%; font-weight: bold; color: ' + colour + '; white-space:nowrap;">' + data + '</div>');
 
     // Add it to the scratchpad so we can measure its width
     $scratchpad.append($elem);
