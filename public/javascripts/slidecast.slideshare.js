@@ -53,14 +53,11 @@
 
   // Receiving a comment
   socket.on('Comment', function(data) {
-    // Display the comment at a random place
-    var x = Math.random() * $window.height();
-
     // Give it a random colour
     var colour = randomColour();
 
     // Create a DOM element for the comment
-    var $elem = $('<div style="position: absolute; top: ' + x + 'px; font-size: 300%; font-weight: bold; color: ' + colour + '; white-space:nowrap;"></div>');
+    var $elem = $('<div style="position: absolute; font-size: 300%; font-weight: bold; color: ' + colour + '; white-space:nowrap;"></div>');
 
     if (data === 'pikachu') {
       $elem.html('<img src="/images/pikachu.png"/>');
@@ -69,12 +66,17 @@
       $elem.text(data);
     }
 
-    // Add it to the scratchpad so we can measure its width
+    // Add it to the scratchpad so we can measure its width and height
     $scratchpad.append($elem);
+
+    // Display the comment at a random place, but make sure it's on the screen
+    var x = Math.min(Math.random() * $window.height(), $window.height() - $elem.height());
 
     // Start with the comment's end at the right hand side of screen
     var startingY = $window.width() - $elem.width();
+
     $elem.remove(); // remove from scratchpad
+    $elem.css('top', x);
     $elem.css('left', startingY);
 
     // Add it to the array so it can be moved later
