@@ -4,10 +4,14 @@
   var $scratchpad = $('#slidecast-scratchpad');
   var $commentsForm = $('#slidecast-form');
   var $commentBox = $('#slidecast-comment');
+  var $showCommentsCheckbox = $('#slidecast-show-comments');
 
   // Comments to be displayed.
   // Each element is a jQuery-ified <div> element
   var comments = [];
+
+  // Should comments be visible
+  var showComments = true;
 
   var socket = window.io();
 
@@ -31,17 +35,37 @@
     }
   }, 100);
 
-  // Sending a comment
-  $commentsForm.submit(function(e) {
-    e.preventDefault();
-    var comment = $commentBox.val();
-    if (comment && comment != '') {
-      // Send comment to server
-      socket.emit('Comment', comment);
+  // Enter key to send comment
+  $(function() {
+    $commentBox.keypress(function (e) {
+      if (e.which === 13) {
+        $commentsForm.submit();
+      }
+    });
 
-      // clear the comment box
-      $commentBox.val("");
-    }
+    // Sending a comment
+    $commentsForm.submit(function(e) {
+      e.preventDefault();
+      var comment = $commentBox.val();
+      if (comment && comment != '') {
+        // Send comment to server
+        socket.emit('Comment', comment);
+
+        // clear the comment box
+        $commentBox.val("");
+      }
+    });
+
+    // Toggle comment visibility
+    $showCommentsCheckbox.change(function(e) {
+      if($showCommentsCheckbox.prop("checked")) {
+        showComments = true;
+        $('.slidecast-comment').show();
+      } else {
+        showComments = false;
+        $('.slidecast-comment').hide();
+      }
+    });
   });
 
   function randomColour() {
@@ -57,7 +81,11 @@
     var colour = randomColour();
 
     // Create a DOM element for the comment
-    var $elem = $('<div style="position: absolute; font-size: 300%; font-weight: bold; color: ' + colour + '; white-space:nowrap;"></div>');
+    var $elem = $('<div class="slidecast-comment" style="position: absolute; font-size: 300%; font-weight: bold; color: ' + colour + '; white-space:nowrap;"></div>');
+
+    if (!showComments) {
+      $elem.hide();
+    }
 
     if (data === 'pikachu') {
       $elem.html('<img src="/images/pikachu.png"/>');
