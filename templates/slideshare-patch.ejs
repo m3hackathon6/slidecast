@@ -1,0 +1,7 @@
+<% if (isPresenter && presenterKey) { %>
+  <a id="slidecast-data" data-pres-id="<%= presId %>" data-presenter="true" data-presenter-key="<%= presenterKey %>"></a>
+<% } else { %>
+  <a id="slidecast-data" data-pres-id="<%= presId %>"></a>
+<% } %>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/slidecast.slideshare.js"></script>
