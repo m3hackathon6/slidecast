@@ -41,3 +41,7 @@ We recommend running the server using nodemon, a tool that automatically restart
 
     $ npm install -g nodemon
     $ DEBUG=slidecast nodemon bin/www
+
+# Attributions
+
+Pikachu image used under [Creative Commons Attribution-NonCommercial-NoDerivs licence](http://creativecommons.org/licenses/by-nc-nd/3.0/). Original is [here](http://kamoodle.deviantart.com/art/Shiny-Pikachu-307350397).

@@ -60,7 +60,14 @@
     var colour = randomColour();
 
     // Create a DOM element for the comment
-    var $elem = $('<div style="position: absolute; top: ' + x + 'px; font-size: 300%; font-weight: bold; color: ' + colour + '; white-space:nowrap;">' + data + '</div>');
+    var $elem = $('<div style="position: absolute; top: ' + x + 'px; font-size: 300%; font-weight: bold; color: ' + colour + '; white-space:nowrap;"></div>');
+
+    if (data === 'pikachu') {
+      $elem.html('<img src="/images/pikachu.png"/>');
+    } else {
+      // use .text() to avoid XSS
+      $elem.text(data);
+    }
 
     // Add it to the scratchpad so we can measure its width
     $scratchpad.append($elem);
