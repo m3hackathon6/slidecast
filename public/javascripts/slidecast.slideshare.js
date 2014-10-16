@@ -1,15 +1,124 @@
 (function() {
+  var $window = $(window);
+  var $body = $('body');
+  var $scratchpad = $('#slidecast-scratchpad');
+  var $commentsForm = $('#slidecast-form');
+  var $commentBox = $('#slidecast-comment');
+  var $showCommentsCheckbox = $('#slidecast-show-comments');
+
+  // Comments to be displayed.
+  // Each element is a jQuery-ified <div> element
+  var comments = [];
+
+  // Should comments be visible
+  var showComments = true;
+
   var socket = window.io();
 
   socket.on('InfoMessage', function(data) { console.log('Info:', data) });
   socket.on('ErrorMessage', function(data) { console.log('Error:', data) });
   socket.on('ViewerCountChanged', function(viewerCount) { console.log('Viewer count changed, there are now ' + viewerCount + ' viewers') });
 
-  // The <a> tag that holds all data injected server-side
-  var dataTag = $('#slidecast-data');
+  // event loop to update comment positions every 100 ms
+  setInterval(function() {
+    for (var i = comments.length - 1; i >= 0; i--) {
+      var $elem = comments[i];
+      var currentOffset = $elem.offset();
+      if (currentOffset.left + $elem.width() < 0) {
+        // If element has left the screen, remove from array and DOM
+        comments.splice(i, 1);
+        $elem.remove();
+      } else {
+        // otherwise, shift it to the left
+        $elem.offset({top: currentOffset.top, left: currentOffset.left - 10});
+      }
+    }
+  }, 100);
 
-  if (dataTag.data('presenter')) {
-    socket.emit('JoinAsPresenter', { presId: dataTag.data('pres-id'), presenterKey: dataTag.data('presenter-key') });
+  // Enter key to send comment
+  $(function() {
+    $commentBox.keypress(function (e) {
+      if (e.which === 13) {
+        $commentsForm.submit();
+      }
+    });
+
+    // Sending a comment
+    $commentsForm.submit(function(e) {
+      e.preventDefault();
+      var comment = $commentBox.val();
+      if (comment && comment != '') {
+        // Send comment to server
+        socket.emit('Comment', comment);
+
+        // clear the comment box
+        $commentBox.val("");
+      }
+    });
+
+    // Toggle comment visibility
+    $showCommentsCheckbox.change(function(e) {
+      if($showCommentsCheckbox.prop("checked")) {
+        showComments = true;
+        $('.slidecast-comment').show();
+      } else {
+        showComments = false;
+        $('.slidecast-comment').hide();
+      }
+    });
+  });
+
+  function randomColour() {
+    function c() {
+        return Math.floor(Math.random()*256).toString(16)
+      }
+    return "#"+c()+c()+c();
+  }
+
+  // Receiving a comment
+  socket.on('Comment', function(data) {
+    // Give it a random colour
+    var colour = randomColour();
+
+    // Create a DOM element for the comment
+    var $elem = $('<div class="slidecast-comment" style="position: absolute; font-size: 300%; font-weight: bold; color: ' + colour + '; white-space:nowrap;"></div>');
+
+    if (!showComments) {
+      $elem.hide();
+    }
+
+    if (data === 'pikachu') {
+      $elem.html('<img src="/images/pikachu.png"/>');
+    } else {
+      // use .text() to avoid XSS
+      $elem.text(data);
+    }
+
+    // Add it to the scratchpad so we can measure its width and height
+    $scratchpad.append($elem);
+
+    // Display the comment at a random place, but make sure it's on the screen
+    var x = Math.min(Math.random() * $window.height(), $window.height() - $elem.height());
+
+    // Start with the comment's end at the right hand side of screen
+    var startingY = $window.width() - $elem.width();
+
+    $elem.remove(); // remove from scratchpad
+    $elem.css('top', x);
+    $elem.css('left', startingY);
+
+    // Add it to the array so it can be moved later
+    comments.push($elem);
+
+    // Add it to the DOM
+    $body.append($elem);
+  });
+
+  // The <a> tag that holds all data injected server-side
+  var $dataTag = $('#slidecast-data');
+
+  if ($dataTag.data('presenter')) {
+    socket.emit('JoinAsPresenter', { presId: $dataTag.data('pres-id'), presenterKey: $dataTag.data('presenter-key') });
 
     var notify = function(slideIndex) {
       var data = {
@@ -34,7 +143,7 @@
       }
     }, 100);
   } else {
-    socket.emit('JoinAsViewer', { presId: dataTag.data('pres-id') });
+    socket.emit('JoinAsViewer', { presId: $dataTag.data('pres-id') });
     socket.on('ChangeSlide', function(data) {
       var index = data.slide;
       var force = false;
