@@ -1,6 +1,7 @@
 (function() {
   var $window = $(window);
   var $body = $('body');
+  var $scratchpad = $('#slidecast-scratchpad');
   var $commentsForm = $('#slidecast-form');
   var $commentBox = $('#slidecast-comment');
 
@@ -34,7 +35,6 @@
   $commentsForm.submit(function(e) {
     e.preventDefault();
     var comment = $commentBox.val();
-    console.log('comment', comment);
     if (comment && comment != '') {
       // Send comment to server
       socket.emit('Comment', comment);
@@ -49,11 +49,16 @@
     // Display the comment at a random place
     var x = Math.random() * $window.height();
 
-    // Start at right hand side of screen
-    var startingY = $window.width();
-
     // Create a DOM element for the comment
-    var $elem = $('<div style="position: absolute; top: ' + x + 'px; left: ' + startingY + 'px; font-size: 200%; white-space:nowrap;">' + data + '</div>');
+    var $elem = $('<div style="position: absolute; top: ' + x + 'px; font-size: 200%; white-space:nowrap;">' + data + '</div>');
+
+    // Add it to the scratchpad so we can measure its width
+    $scratchpad.append($elem);
+
+    // Start with the comment's end at the right hand side of screen
+    var startingY = $window.width() - $elem.width();
+    $elem.remove(); // remove from scratchpad
+    $elem.css('left', startingY);
 
     // Add it to the array so it can be moved later
     comments.push($elem);
