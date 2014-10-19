@@ -17,7 +17,15 @@
 
   socket.on('InfoMessage', function(data) { console.log('Info:', data) });
   socket.on('ErrorMessage', function(data) { console.log('Error:', data) });
-  socket.on('ViewerCountChanged', function(viewerCount) { console.log('Viewer count changed, there are now ' + viewerCount + ' viewers') });
+  socket.on('ViewerCountChanged', function(viewerCount) { 
+    console.log('Viewer count changed, there are now ' + viewerCount + ' viewers');
+    $('#viewer_count').counter({
+          initial: viewerCount,
+          direction: 'up',
+          interval: '1',
+          format: '99',
+          stop: viewerCount});
+  });
 
   // event loop to update comment positions every 100 ms
   setInterval(function() {

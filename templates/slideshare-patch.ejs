@@ -22,5 +22,27 @@
 
 <div id="slidecast-scratchpad" style="visibility: hidden;"></div>
 
+<div id="slidecast-overlay" 
+     style="position: absolute; top: 60px; left: 10px; background-image: url(/images/viewer.png); background-repeat: no-repeat; padding-left: 40px;">
+  <span id="viewer_count" class="counter-analog3">00</span>
+</div>
+
 <script src="/socket.io/socket.io.js"></script>
 <script src="/javascripts/slidecast.slideshare.js"></script>
+<script src="/jquery.counter/jquery.counter.js"></script>
+
+<script>
+  $("head").append("<link>");
+  css = $("head").children(":last");
+  css.attr({
+    rel: "stylesheet",
+    type: "text/css",
+    href: "/jquery.counter/jquery.counter-analog3.css"
+  });
+  $('#viewer_count').counter({
+    initial: '00',
+    direction: 'up',
+    interval: '1',
+    format: '99',
+    stop: '00'});
+</script>
