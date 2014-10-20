@@ -19,7 +19,7 @@ router.get('/presentations/:id/present', function(req, res) {
 
 /* Present a presentation */
 router.post('/presentations/:id/present', function(req, res) {
-  controller.presentPresentation(res, req.params.id, req.body.password, req.path, req.headers['User-Agent']);
+  controller.presentPresentation(res, req.params.id, req.body.password, req.path, req.headers['user-agent']);
 });
 
 module.exports = router;
