@@ -13,18 +13,23 @@
   // Should comments be visible
   var showComments = true;
 
+  // How many people are viewing the presentation right now.
+  // This is updated on receipt of a 'ViewerCountChanged' message.
+  var currentViewerCount = 0;
+
   var socket = window.io();
 
   socket.on('InfoMessage', function(data) { console.log('Info:', data) });
   socket.on('ErrorMessage', function(data) { console.log('Error:', data) });
-  socket.on('ViewerCountChanged', function(viewerCount) { 
-    console.log('Viewer count changed, there are now ' + viewerCount + ' viewers');
+  socket.on('ViewerCountChanged', function(newViewerCount) { 
+    console.log('Viewer count changed, there are now ' + newViewerCount + ' viewers');
     $('#viewer_count').counter({
-          initial: viewerCount,
-          direction: 'up',
+          initial: currentViewerCount,
+          direction: (newViewerCount >= currentViewerCount) ? 'up' : 'down',
           interval: '1',
           format: '99',
-          stop: viewerCount});
+          stop: newViewerCount});
+    currentViewerCount = newViewerCount;
   });
 
   // event loop to update comment positions every 100 ms
