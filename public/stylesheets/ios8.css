@@ -1,0 +1,4 @@
+html {
+    /* enough space to scroll up to get fullscreen on iOS8 */
+    padding-bottom: 80px;
+}
