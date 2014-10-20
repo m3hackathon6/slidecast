@@ -22,6 +22,7 @@
     "redis": "0.12.1",
     "node-uuid": "1.4.1",
     "request": "2.45.0",
-    "cheerio": "0.17.0"
+    "cheerio": "0.17.0",
+    "ua-parser": "0.3.3"
   }
 }
