@@ -27,7 +27,14 @@
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="/javascripts/slidecast.slideshare.js"></script>
+
+<% if (mobile) { %>
+  <script src="/javascripts/slidecast.mobile.js"></script>
+<% } else { %>
+  <script src="/javascripts/slidecast.embed.js"></script>
+<% } %>
+<script src="/javascripts/slidecast.common.js"></script>
+
 <script src="/jquery.counter/jquery.counter.js"></script>
 
 <script>
