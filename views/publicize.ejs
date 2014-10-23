@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Slidecast</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1><a href="/">Slidecast</a></h1>
+      <div class="jumbotron">
+        <h2>To view this presentation, please access</h2>
+        <h2><a href="<%= presentationUrl %>"><%= presentationUrl %></a></h2>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">QR Code</h3>
+          </div>
+          <div class="panel-body">
+            <p><img class="center-block" src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=<%= encodeURIComponent(presentationUrl) %>" /></p>
+          </div>
+        </div>
+      </div>
+
+</html>

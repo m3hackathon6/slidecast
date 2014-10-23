@@ -15,7 +15,7 @@
             <h3 class="panel-title">Latest presentations</h3>
           </div>
           <div class="panel-body">
-            <form id="header" name="header" method="get" action="/qrCode/">
+            <form id="header" name="header">
               <select name="history">
                 <% historyList.forEach(function(history){ %>
                   <option value="<%= history.presId %>"><%= history.presId %> : <%= history.url %></option>
@@ -23,7 +23,7 @@
               </select>
               <button class="btn btn-primary" type="button" onclick="jumpToSelectedHistory(false);">View</button>
               <button class="btn btn-default" type="button" onclick="jumpToSelectedHistory(true);">Present</button>
-              <button class="btn btn-default" type="Submit" onclick="setQrCodeAction();">Publicize</button>
+              <button class="btn btn-default" type="button" onclick="jumpToPublicizePage();">Publicize</button>
             </form>
           </div>
         </div>
@@ -48,7 +48,7 @@
 
               <div class="form-group">
                 <label for="url">SlideShare Url</label>
-                <input id="url" name="url" class="form-control" type="url" required pattern="https?://(www.)?slideshare.net/.+/.+/?" placeholder="e.g. http://www.slideshare.net/cb372/guess-the-country" autocomplete="off"/>
+                <input id="url" name="url" class="form-control" type="url" required pattern="https?://(www.)?slideshare.net/.+/.+/?" title="Please enter a SlideShare URL of the form 'http://www.slideshare.net/username/presentation-name'" placeholder="e.g. http://www.slideshare.net/cb372/guess-the-country" autocomplete="off"/>
                 <span class="help-block">Paste the URL of your SlideShare slides here.</span>
                 <% if (error && error.url){ %>
                   <p style="color:red;"><%= error.url %></p>
@@ -73,12 +73,11 @@
     </div>
 
     <script>
-      // TODO レイアウトやCSSを整えたい
-      // form actionを書き換える
-      function setQrCodeAction(){
+      function jumpToPublicizePage(){
         var presId = getSelectedPresId();
         if (presId){
-          document.getElementById('header').action = "/qrCode/" + presId;
+          var suffix = "/publicize";
+          document.location.href = "/presentations/" + presId + suffix;
         }
       }
       // 選択中の履歴を表示する

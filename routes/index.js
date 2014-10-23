@@ -24,13 +24,12 @@ router.post('/presentations/:id/present', function(req, res) {
 
 /* Add a presentation */
 router.post('/presentations/', function(req, res) {
-  var body = req.protocol + '://' + req.headers.host + req.url;
-  controller.addPresentation(res, req.body.presId, req.body.url, req.body.password, body);
+  controller.addPresentation(res, req.body.presId, req.body.url, req.body.password);
 });
 
-/* Show QR Code */
-router.get('/qrCode/:id', function(req, res) {
-  var body = req.protocol + '://' + req.headers.host + "/presentations/";
-  controller.showQRCode(res, req.params.id, body);
+/* Publicize a presentation */
+router.get('/presentations/:id/publicize', function(req, res) {
+  var presentationUrl = req.protocol + '://' + req.headers.host + "/presentations/" + req.params.id;
+  controller.showPublicizePage(res, req.params.id, presentationUrl);
 });
 module.exports = router;
