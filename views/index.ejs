@@ -13,8 +13,9 @@
           <option value="<%= history.presId %>"><%= history.presId %> : <%= history.url %></option>
         <% }) %>
       </select>
-      <button type="button" onclick="jumpToSelectedHisotry();">Jump</button>
-      <button type="Submit" onclick="setQrCodeAction();">QR Code</button>
+      <button type="button" onclick="jumpToSelectedHistory(false);">View</button>
+      <button type="button" onclick="jumpToSelectedHistory(true);">Present</button>
+      <button type="Submit" onclick="setQrCodeAction();">Publicize</button>
     </form>
     <form id="main" name="main" method="post" action="/presentations/">
        <div id="inputArea">
@@ -45,7 +46,7 @@
             <p style="color:red;"><%= error.password %></p>
           <% } %>
         </dd>
-        <button type="Submit">Save Presentation</button>
+        <button type="Submit">Save</button>
       </div>
     </form>
 
@@ -59,10 +60,11 @@
     }
   }
   // 選択中の履歴を表示する
-  function jumpToSelectedHisotry(){
+  function jumpToSelectedHistory(isPresenter){
     var presId = getSelectedPresId();
     if (presId){
-      document.location.href = "/presentations/" + presId;
+      var suffix = (isPresenter) ? "/present" : "";
+      document.location.href = "/presentations/" + presId + suffix;
     }
   }
   function getSelectedPresId(){
