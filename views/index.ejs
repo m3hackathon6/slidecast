@@ -2,76 +2,98 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <form id="header" name="header" method="get" action="/qrCode/">
-      <select name="history">
-        <% historyList.forEach(function(history){ %>
-          <option value="<%= history.presId %>"><%= history.presId %> : <%= history.url %></option>
-        <% }) %>
-      </select>
-      <button type="button" onclick="jumpToSelectedHistory(false);">View</button>
-      <button type="button" onclick="jumpToSelectedHistory(true);">Present</button>
-      <button type="Submit" onclick="setQrCodeAction();">Publicize</button>
-    </form>
-    <form id="main" name="main" method="post" action="/presentations/">
-       <div id="inputArea">
-        <dt>
-          <label for="presId">Presentaion Id</label>
-        </dt>
-        <dd>
-          <input id="presId" name="presId" type="text"/>
-            <% if (error && error.presId){ %>
-            <p style="color:red;"><%= error.presId %></p>
-          <% } %>
-        </dd>
-        <dt>
-          <label for="url">Presentation Url</label>
-        </dt>
-        <dd>
-          <input id="url" name="url" type="text" />
-          <% if (error && error.url){ %>
-            <p style="color:red;"><%= error.url %></p>
-          <% } %>
-        </dd>
-        <dt>
-          <label for="password">Password</label>
-        </dt>
-        <dd>
-          <input id="password" name="password" type="password" />
-          <% if (error && error.password){ %>
-            <p style="color:red;"><%= error.password %></p>
-          <% } %>
-        </dd>
-        <button type="Submit">Save</button>
+    <div class="container">
+      <h1><%= title %></h1>
+
+      <% if (historyList.length > 0) { %>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Latest presentations</h3>
+          </div>
+          <div class="panel-body">
+            <form id="header" name="header" method="get" action="/qrCode/">
+              <select name="history">
+                <% historyList.forEach(function(history){ %>
+                  <option value="<%= history.presId %>"><%= history.presId %> : <%= history.url %></option>
+                <% }) %>
+              </select>
+              <button class="btn btn-primary" type="button" onclick="jumpToSelectedHistory(false);">View</button>
+              <button class="btn btn-default" type="button" onclick="jumpToSelectedHistory(true);">Present</button>
+              <button class="btn btn-default" type="Submit" onclick="setQrCodeAction();">Publicize</button>
+            </form>
+          </div>
+        </div>
+      <% } %>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Register a presentation</h3>
+        </div>
+        <div class="panel-body">
+          <form id="main" name="main" method="post" action="/presentations/" role="form" autocomplete="off">
+            <div id="inputArea">
+            
+              <div class="form-group">
+                <label for="presId">Presentation Id <small>(optional)</small></label>
+                <input id="presId" name="presId" class="form-control" type="text" placeholder="e.g. my-cool-pres" />
+                <span class="help-block">If you don't specify an ID, a random one will be generated for you.</span>
+                  <% if (error && error.presId){ %>
+                  <p style="color:red;"><%= error.presId %></p>
+                <% } %>
+              </div>
+
+              <div class="form-group">
+                <label for="url">SlideShare Url</label>
+                <input id="url" name="url" class="form-control" type="url" required pattern="https?://(www.)?slideshare.net/.+/.+/?" placeholder="e.g. http://www.slideshare.net/cb372/guess-the-country" autocomplete="off"/>
+                <span class="help-block">Paste the URL of your SlideShare slides here.</span>
+                <% if (error && error.url){ %>
+                  <p style="color:red;"><%= error.url %></p>
+                <% } %>
+              </div>
+
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" name="password" class="form-control" type="password" required autocomplete="off" />
+                <span class="help-block">Choose a password to protect your presentation. You'll need to enter this when you want to present.</span>
+                <% if (error && error.password){ %>
+                  <p style="color:red;"><%= error.password %></p>
+                <% } %>
+              </div>
+
+              <button class="btn btn-primary" type="Submit">Save</button>
+            </div>
+          </form>
+        </div>
       </div>
-    </form>
 
-<script>
-  // TODO レイアウトやCSSを整えたい
-  // form actionを書き換える
-  function setQrCodeAction(){
-    var presId = getSelectedPresId();
-    if (presId){
-      document.getElementById('header').action = "/qrCode/" + presId;
-    }
-  }
-  // 選択中の履歴を表示する
-  function jumpToSelectedHistory(isPresenter){
-    var presId = getSelectedPresId();
-    if (presId){
-      var suffix = (isPresenter) ? "/present" : "";
-      document.location.href = "/presentations/" + presId + suffix;
-    }
-  }
-  function getSelectedPresId(){
-    var select = document.getElementsByName("history")[0];
-    return select.options[select.selectedIndex].value;
-  }
-</script>
+    </div>
 
- </body>
+    <script>
+      // TODO レイアウトやCSSを整えたい
+      // form actionを書き換える
+      function setQrCodeAction(){
+        var presId = getSelectedPresId();
+        if (presId){
+          document.getElementById('header').action = "/qrCode/" + presId;
+        }
+      }
+      // 選択中の履歴を表示する
+      function jumpToSelectedHistory(isPresenter){
+        var presId = getSelectedPresId();
+        if (presId){
+          var suffix = (isPresenter) ? "/present" : "";
+          document.location.href = "/presentations/" + presId + suffix;
+        }
+      }
+      function getSelectedPresId(){
+        var select = document.getElementsByName("history")[0];
+        return select.options[select.selectedIndex].value;
+      }
+    </script>
+
+  </body>
 </html>
