@@ -7,5 +7,69 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
-  </body>
+    <form id="header" name="header" method="get" action="/qrCode/">
+      <select name="history">
+        <% historyList.forEach(function(history){ %>
+          <option value="<%= history.presId %>"><%= history.presId %> : <%= history.url %></option>
+        <% }) %>
+      </select>
+      <button type="button" onclick="jumpToSelectedHisotry();">Jump</button>
+      <button type="Submit" onclick="setQrCodeAction();">QR Code</button>
+    </form>
+    <form id="main" name="main" method="post" action="/presentations/">
+       <div id="inputArea">
+        <dt>
+          <label for="presId">Presentaion Id</label>
+        </dt>
+        <dd>
+          <input id="presId" name="presId" type="text"/>
+            <% if (error && error.presId){ %>
+            <p style="color:red;"><%= error.presId %></p>
+          <% } %>
+        </dd>
+        <dt>
+          <label for="url">Presentation Url</label>
+        </dt>
+        <dd>
+          <input id="url" name="url" type="text" />
+          <% if (error && error.url){ %>
+            <p style="color:red;"><%= error.url %></p>
+          <% } %>
+        </dd>
+        <dt>
+          <label for="password">Password</label>
+        </dt>
+        <dd>
+          <input id="password" name="password" type="password" />
+          <% if (error && error.password){ %>
+            <p style="color:red;"><%= error.password %></p>
+          <% } %>
+        </dd>
+        <button type="Submit">Save Presentation</button>
+      </div>
+    </form>
+
+<script>
+  // TODO レイアウトやCSSを整えたい
+  // form actionを書き換える
+  function setQrCodeAction(){
+    var presId = getSelectedPresId();
+    if (presId){
+      document.getElementById('header').action = "/qrCode/" + presId;
+    }
+  }
+  // 選択中の履歴を表示する
+  function jumpToSelectedHisotry(){
+    var presId = getSelectedPresId();
+    if (presId){
+      document.location.href = "/presentations/" + presId;
+    }
+  }
+  function getSelectedPresId(){
+    var select = document.getElementsByName("history")[0];
+    return select.options[select.selectedIndex].value;
+  }
+</script>
+
+ </body>
 </html>
