@@ -47,7 +47,7 @@
               </div>
 
               <div class="form-group">
-                <label for="url">SlideShare Url</label>
+                <label for="url">SlideShare URL <small>(required)</small></label>
                 <input id="url" name="url" class="form-control" type="url" required pattern="https?://(www.)?slideshare.net/.+/.+/?" title="Please enter a SlideShare URL of the form 'http://www.slideshare.net/username/presentation-name'" placeholder="e.g. http://www.slideshare.net/cb372/guess-the-country" autocomplete="off"/>
                 <span class="help-block">Paste the URL of your SlideShare slides here.</span>
                 <% if (error && error.url){ %>
@@ -56,7 +56,7 @@
               </div>
 
               <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">Password <small>(required)</small></label>
                 <input id="password" name="password" class="form-control" type="password" required autocomplete="off" />
                 <span class="help-block">Choose a password to protect your presentation. You'll need to enter this when you want to present.</span>
                 <% if (error && error.password){ %>

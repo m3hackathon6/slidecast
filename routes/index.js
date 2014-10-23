@@ -2,8 +2,13 @@ var express = require('express');
 var router = express.Router();
 var controller = require('../lib/controller');
 
-/* GET home page. */
+/* Root redirects to index page */
 router.get('/', function(req, res) {
+  res.redirect('/presentations/');
+});
+
+/* GET home page. */
+router.get('/presentations/', function(req, res) {
 	controller.loadIndexPage(res);
 });
 
