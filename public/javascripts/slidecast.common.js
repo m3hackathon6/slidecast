@@ -108,6 +108,8 @@
       $elem.html('<img src="/images/doraemon.png"/>');
     } else if (data === 'rilakkuma' || data === 'リラックマ') {
       $elem.html('<img src="/images/rilakkuma.png"/>');
+    } else if (data === 'chris' || data === 'Chris' || data === 'クリス') {
+      $elem.html('<img src="/images/chris.png"/>');
     } else {
       // use .text() to avoid XSS
       $elem.text(data);
