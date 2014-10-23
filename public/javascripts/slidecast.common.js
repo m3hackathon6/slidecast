@@ -108,6 +108,8 @@
       $elem.html('<img src="/images/doraemon.png"/>');
     } else if (data === 'rilakkuma' || data === 'リラックマ') {
       $elem.html('<img src="/images/rilakkuma.png"/>');
+    } else if (data === 'chris' || data === 'Chris' || data === 'クリス') {
+      $elem.html('<img src="/images/chris.png"/>');
     } else {
       // use .text() to avoid XSS
       $elem.text(data);
@@ -152,9 +154,11 @@
     // so just poll for the current slide index every 100ms
     // and send a message if it has changed.
     
-    var lastKnownPosition = 1; // slides start at 1, not 0
+    // By convention, we say that first slide is index 0, not 1
+    var lastKnownPosition = 0;
+
     setInterval(function() {
-      var currentPosition = $.slideshareEventManager.controller.currentPosition;
+      var currentPosition = window.slidecast.getCurrentSlideIndex();
       if (currentPosition != lastKnownPosition) {
         // slide has changed
         notify(currentPosition);
@@ -164,10 +168,7 @@
   } else {
     socket.emit('JoinAsViewer', { presId: $dataTag.data('pres-id') });
     socket.on('ChangeSlide', function(data) {
-      var index = data.slide;
-      var force = false;
-      var source = "";
-      $.slideshareEventManager.controller.play(index, force, source);
+      window.slidecast.goToSlide(data.slide);
     });
   }
 })();
