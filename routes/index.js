@@ -4,7 +4,7 @@ var controller = require('../lib/controller');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
+	controller.loadIndexPage(res);
 });
 
 /* View a presentation */
@@ -22,4 +22,15 @@ router.post('/presentations/:id/present', function(req, res) {
   controller.presentPresentation(res, req.params.id, req.body.password, req.path, req.headers['user-agent']);
 });
 
+/* Add a presentation */
+router.post('/presentations/', function(req, res) {
+  var body = req.protocol + '://' + req.headers.host + req.url;
+  controller.addPresentation(res, req.body.presId, req.body.url, req.body.password, body);
+});
+
+/* Show QR Code */
+router.get('/qrCode/:id', function(req, res) {
+  var body = req.protocol + '://' + req.headers.host + "/presentations/";
+  controller.showQRCode(res, req.params.id, body);
+});
 module.exports = router;
