@@ -100,14 +100,14 @@
       $elem.hide();
     }
 
-    if (data === 'pikachu' || data === 'ピカチュウ') {
-      $elem.html('<img src="/images/pikachu.png"/>');
-    } else if (data === 'jibanyan' || data === 'ジバニャン') {
-      $elem.html('<img src="/images/jibanyan.gif"/>');
-    } else if (data === 'doraemon' || data === 'ドラえもん') {
-      $elem.html('<img src="/images/doraemon.png"/>');
-    } else if (data === 'rilakkuma' || data === 'リラックマ') {
-      $elem.html('<img src="/images/rilakkuma.png"/>');
+    if (data === 'momotaro' || data === 'ももたろう' data === '桃太郎') {
+      $elem.html('<img src="/images/momotaro.jpg"/>');
+    } else if (data === 'panda' || data === 'パンダ') {
+      $elem.html('<img src="/images/panda.jpg"/>');
+    } else if (data === 'samurai' || data === 'さむらい' || data === '侍') {
+      $elem.html('<img src="/images/samurai.jpg"/>');
+    } else if (data === 'reruteru' || data === 'てるてる坊主') {
+      $elem.html('<img src="/images/teruteru.jpg"/>');
     } else if (data === 'chris' || data === 'Chris' || data === 'クリス') {
       $elem.html('<img src="/images/chris.png"/>');
     } else {
