@@ -100,7 +100,7 @@
       $elem.hide();
     }
 
-    if (data === 'momotaro' || data === 'ももたろう' data === '桃太郎') {
+    if (data === 'momotaro' || data === 'ももたろう' || data === '桃太郎') {
       $elem.html('<img src="/images/momotaro.jpg"/>');
     } else if (data === 'panda' || data === 'パンダ') {
       $elem.html('<img src="/images/panda.jpg"/>');
