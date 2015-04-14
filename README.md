@@ -45,3 +45,5 @@ We recommend running the server using nodemon, a tool that automatically restart
 # Attributions
 
 Pikachu image used under [Creative Commons Attribution-NonCommercial-NoDerivs licence](http://creativecommons.org/licenses/by-nc-nd/3.0/). Original is [here](http://kamoodle.deviantart.com/art/Shiny-Pikachu-307350397).
+
+Thanks [sherv.net](http://www.sherv.net/emoticons.html) for free emoticons. Original is [here](http://www.sherv.net/face-emoticons.html).

@@ -5,6 +5,8 @@
   var $commentsForm = $('#slidecast-form');
   var $commentBox = $('#slidecast-comment');
   var $showCommentsCheckbox = $('#slidecast-show-comments');
+  var $emoticonLink = $('.emoticon a')
+  var $commentEmoticon = $('#slidecast-emoticon');
 
   // Comments to be displayed.
   // Each element is a jQuery-ified <div> element
@@ -56,17 +58,38 @@
       }
     });
 
+    $emoticonLink.click(function (e) {
+      var srcPathTokens = e.target.src.split('/');
+      var emoticonName = srcPathTokens[srcPathTokens.length - 1];
+      $commentEmoticon.val(emoticonName);
+      $commentsForm.submit();
+    }); 
+
     // Sending a comment
     $commentsForm.submit(function(e) {
       e.preventDefault();
+      var data = {};
       var comment = $commentBox.val();
+      var emoticon = $commentEmoticon.val();
+
       if (comment && comment != '') {
-        // Send comment to server
-        socket.emit('Comment', comment);
+        // add comment to data
+        data.comment = comment
 
         // clear the comment box
         $commentBox.val("");
       }
+
+      if (emoticon && emoticon != '') {
+        // add emoticon to data
+        data.emoticon = emoticon
+
+        // clear the emoticon
+        $commentEmoticon.val("");
+      }
+
+      // Send comment to server
+      socket.emit('Comment', data);
     });
 
     // Toggle comment visibility
@@ -88,6 +111,10 @@
     return "#"+c()+c()+c();
   }
 
+  function escapeHTML(val) {
+      return $('<div />').text(val).html();
+  };
+
   // Receiving a comment
   socket.on('Comment', function(data) {
     // Give it a random colour
@@ -100,19 +127,18 @@
       $elem.hide();
     }
 
-    if (data === 'momotaro' || data === 'ももたろう' || data === '桃太郎') {
-      $elem.html('<img src="/images/momotaro.jpg"/>');
-    } else if (data === 'panda' || data === 'パンダ') {
-      $elem.html('<img src="/images/panda.jpg"/>');
-    } else if (data === 'samurai' || data === 'さむらい' || data === '侍') {
-      $elem.html('<img src="/images/samurai.jpg"/>');
-    } else if (data === 'reruteru' || data === 'てるてる坊主') {
-      $elem.html('<img src="/images/teruteru.jpg"/>');
-    } else if (data === 'chris' || data === 'Chris' || data === 'クリス') {
+    var comment = data.comment;
+
+    if (comment === 'chris' || comment === 'Chris' || comment === 'クリス') {
       $elem.html('<img src="/images/chris.png"/>');
     } else {
       // use .text() to avoid XSS
-      $elem.text(data);
+      $elem.text(comment);
+    }
+
+    var emoticon = data.emoticon;
+    if (emoticon && emoticon != '') {
+      $elem.html($elem.html() + '<img src="/images/emoticons/png/' + escapeHTML(emoticon) + '">');
     }
 
     // Add it to the scratchpad so we can measure its width and height
