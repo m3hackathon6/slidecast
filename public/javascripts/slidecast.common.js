@@ -111,6 +111,10 @@
     return "#"+c()+c()+c();
   }
 
+  function escapeHTML(val) {
+      return $('<div />').text(val).html();
+  };
+
   // Receiving a comment
   socket.on('Comment', function(data) {
     // Give it a random colour
@@ -134,7 +138,7 @@
 
     var emoticon = data.emoticon;
     if (emoticon && emoticon != '') {
-      $elem.html($elem.html() + '<img src="/images/emoticons/png/' + emoticon + '">');
+      $elem.html($elem.html() + '<img src="/images/emoticons/png/' + escapeHTML(emoticon) + '">');
     }
 
     // Add it to the scratchpad so we can measure its width and height
